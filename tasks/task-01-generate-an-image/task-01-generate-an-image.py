@@ -15,10 +15,9 @@ def generate_image(seed, width, height, mean, std):
     Returns:
         image (numpy.ndarray): The generated image.
     """
-    ### START CODE HERE ###
-    ### TODO
-    ### END CODE HERE ###
-    return image
+    np.random.seed(seed)
+    image = np.random.normal(loc=mean, scale=std, size=(height, width))
+    return image    
 
 if __name__ == "__main__":
 
@@ -36,6 +35,11 @@ if __name__ == "__main__":
                      [147.00176835, 124.97285583, 125.93562296],
                      [136.21197004, 130.88087142, 157.08547014],
                      [143.2207545,  130.43350033, 136.87726465]])
+    
+    print("Imagem gerada:")
+    print(image)
+    print("\nImagem esperada:")
+    print(test)
 
     assert (np.abs(image - test) < 0.0001).all()
     print("Test passed!")
