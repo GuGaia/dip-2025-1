@@ -43,6 +43,3 @@ if __name__ == "__main__":
 
     assert (np.abs(image - test) < 0.0001).all()
     print("Test passed!")
-
-
-

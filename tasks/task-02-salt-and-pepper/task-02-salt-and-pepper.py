@@ -6,9 +6,10 @@ def create_salt_and_pepper_noise(height=100, width=100, salt_prob=0.05, pepper_p
     pepper (I = -1.0) noise with respective probability distributions
     equal to salt_prob and pepper_prob. Pixels without noise have values of 0.5.
     """
-    ### START CODE HERE ###
-    # TODO
-    ### END CODE HERE ###
+    img = np.full((height, width), 0.5, dtype=np.float32)
+    noise = np.random.rand(height, width)
+    img[noise < salt_prob] = 1.0
+    img[(noise >= salt_prob) & (noise < salt_prob + pepper_prob)] = -1.0
     return img
 
 def main():
