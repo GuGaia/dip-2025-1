@@ -33,11 +33,13 @@ def load_image_from_url(url: str, flags: int = cv.IMREAD_COLOR) -> np.ndarray:
     - RuntimeError: If the image cannot be loaded or decoded.
     """
     try:
-        ### START CODE HERE ###
-        ### TODO
-        image = None
-        ### END CODE HERE ###
+        resposta = urllib.request.urlopen(url)
+        arrayImagem = np.asanyarray(bytearray(resposta.read()), dtype=np.uint8)
+        image = cv.imdecode(arrayImagem, flags)
 
+        if image is None:
+            raise RuntimeError(f"[ERROR] Decoding failed.")
+        
         return image
 
     except Exception as e:
