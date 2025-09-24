@@ -26,8 +26,25 @@ Notes:
 
 import cv2 as cv
 import numpy as np
-import scikitimage as ski
 
 def match_histograms_rgb(source_img: np.ndarray, reference_img: np.ndarray) -> np.ndarray:
-    # Your implementation here
-    pass
+
+    def build_lut(src_channel: np.ndarray, ref_channel: np.ndarray) -> np.ndarray:
+
+        src_hist = np.bincount(src_channel.ravel(), minlength=256)
+        ref_hist = np.bincount(ref_channel.ravel(), minlength=256)
+
+        src_cdf = np.cumsum(src_hist).astype(np.float64)
+        ref_cdf = np.cumsum(ref_hist).astype(np.float64)
+        src_cdf /= src_cdf[-1] if src_cdf[-1] > 0 else 1.0
+        ref_cdf /= ref_cdf[-1] if ref_cdf[-1] > 0 else 1.0
+
+        lut = np.interp(src_cdf, ref_cdf, np.arange(256)).round().astype(np.uint8)
+        return lut  
+
+    matched = np.empty_like(source_img)
+    for c in range(3):
+        lut = build_lut(source_img[:, :, c], reference_img[:, :, c])
+        matched[:, :, c] = lut[source_img[:, :, c]]
+
+    return matched
